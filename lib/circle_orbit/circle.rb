@@ -12,8 +12,6 @@ module CircleOrbit
 
     def process_posts
       spaces = get_spaces
-      require "byebug"
-      byebug
 
       spaces.each do |space|
         posts = get_posts(space["id"])
