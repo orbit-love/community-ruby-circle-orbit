@@ -1,33 +1,29 @@
-# PLATFORM to Orbit Workspace
+# Circle Interactions to Orbit Workspace
 
-<!-- Update repo name -->
-![Build Status](https://github.com/orbit-love/repo-name/workflows/CI/badge.svg)
-<!-- Generator at https://badge.fury.io/ -->
-[![Gem Version](https://badge.fury.io/rb/dev_orbit.svg)](https://badge.fury.io/rb/dev_orbit)
+![Build Status](https://github.com/orbit-love/community-ruby-circle-orbit/workflows/CI/badge.svg)
+[![Gem Version](https://badge.fury.io/rb/circle_orbit.svg)](https://badge.fury.io/rb/circle_orbit)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](.github/CODE_OF_CONDUCT.md)
 
-One-line description about what this is and what language it is in.
+Add your Circle interactions into your Orbit workspace with this community-built integration.
 
-<!-- Screenshot(s) of activity in timeline from this integration -->
+<!-- Screenshot of activity here! -->
 
 |<p align="left">:sparkles:</p> This is a *community project*. The Orbit team does its best to maintain it and keep it up to date with any recent API changes.<br/><br/>We welcome community contributions to make sure that it stays current. <p align="right">:sparkles:</p>|
 |-----------------------------------------|
 
-![There are three ways to use this integration. Install package - build and run your own applications. Run the CLI - run on-demand directly from your terminal. Schedule an automation with GitHub - get started in minutes - no coding required](docs/ways-to-use.png)
+![There are three ways to use this integration. Install package - build and run your own applications. Run the CLI - run on-demand directly from your terminal. Schedule an automation with GitHub - get started in minutes - no coding required](readme-images/ways-to-use.png)
 
 ## First Time Setup
 
-<!-- If this section is short, delete docs/setup.md and write the guide under this heading -->
-
-To set up this integration you will need some details from PLATFORM. To get these details please follow the [First Time Setup guide](docs/setup.md).
-
+To set up this integration you will need your Circle API key and your Circle community URL. See the below table for instructions on where to find it, along with your Orbit API credentials.
 ## Application Credentials
 
 The application requires the following environment variables:
 
 | Variable | Description | More Info
 |---|---|--|
-| `NAME` | Brief description | Where to get it 
+| `CIRCLE_API_KEY` | Circle API key | Create a new API key in the API section in your User Settings
+| `CIRCLE_URL`     | Circle community URL | This is your Circle custom URL, for example: `https://orbit.circle.so`
 | `ORBIT_API_KEY` | API key for Orbit | Found in `Account Settings` in your Orbit workspace
 | `ORBIT_WORKSPACE_ID` | ID for your Orbit workspace | Last part of the Orbit workspace URL, i.e. `https://app.orbit.love/my-workspace`, the ID is `my-workspace`
 
@@ -36,32 +32,50 @@ The application requires the following environment variables:
 Install the package with the following command
 
 ```
-$ installation command
+$ gem install circle_orbit
 ```
 
-Use the package with the following snippet.
+Then, run `bundle install` from your terminal.
 
+You can instantiate a client by either passing in the required credentials during instantiation or by providing them in your `.env` file.
+
+### Instantiation with credentials:
+
+```ruby
+client = CircleOrbit::Client.new(
+    orbit_api_key: YOUR_API_KEY,
+    orbit_workspace_id: YOUR_ORBIT_WORKSPACE_ID,
+    circle_api_key: YOUR_CIRCLE_API_KEY
+)
 ```
-#
+
+### Instantiation with credentials in dotenv file:
+
+```ruby
+client = CircleOrbit::Client.new
 ```
+### Describe Method
 
-<!-- Make sure all variants and standalone methods are explained. -->
+Description:
 
+```ruby
+client.method
+```
 ## CLI Usage
 
-To use this package you DO/DO NOT need to install it.
+You can also use this package with the included CLI. To use the CLI pass in the required environment variables on the command line before invoking the CLI.
 
-```
-#
-```
+To check for ...:
 
-<!-- Explain any flags/config options -->
+```bash
+$ ORBIT_API_KEY=... ORBIT_WORKSPACE_ID=... circle_api_key=... bundle exec circle_orbit --flag
+```
 
 ## GitHub Actions Automation Setup
 
 ⚡ You can set up this integration in a matter of minutes using our GitHub Actions template. It will run regularly to add new activities to your Orbit workspace. All you need is a GitHub account.
 
-[See our guide for setting up this automation](#)
+[See our guide for setting up this automation](https://github.com/orbit-love/github-actions-templates/blob/main/Circle/README.md)
 
 ## Contributing
 
