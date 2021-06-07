@@ -6,7 +6,7 @@
 
 Add your Circle interactions into your Orbit workspace with this community-built integration.
 
-<!-- Screenshot of activity here! -->
+![Screenshot of Activity in Orbit Workspace](readme-images/screenshot_of_activity.png)
 
 |<p align="left">:sparkles:</p> This is a *community project*. The Orbit team does its best to maintain it and keep it up to date with any recent API changes.<br/><br/>We welcome community contributions to make sure that it stays current. <p align="right">:sparkles:</p>|
 |-----------------------------------------|
