@@ -45,7 +45,8 @@ You can instantiate a client by either passing in the required credentials durin
 client = CircleOrbit::Client.new(
     orbit_api_key: YOUR_API_KEY,
     orbit_workspace_id: YOUR_ORBIT_WORKSPACE_ID,
-    circle_api_key: YOUR_CIRCLE_API_KEY
+    circle_api_key: YOUR_CIRCLE_API_KEY,
+    circle_url: YOUR_CIRCLE_URL
 )
 ```
 
@@ -54,21 +55,35 @@ client = CircleOrbit::Client.new(
 ```ruby
 client = CircleOrbit::Client.new
 ```
-### Describe Method
+### Post New Spaces Posts to Orbit Workspace
 
-Description:
+You can use the gem to get new posts in your Circle Spaces and share them as custom activities to your Orbit workspace by using the `#posts` method on your `client instance`:
 
 ```ruby
-client.method
+client.posts
+```
+
+### Post New Spaces Comments to Orbit Workspace
+
+You can use the gem to get new comments on posts in your Circle Spaces and share them as custom activities to your Orbit workspace by using the `#posts` method on your `client instance`:
+
+```ruby
+client.comments
 ```
 ## CLI Usage
 
 You can also use this package with the included CLI. To use the CLI pass in the required environment variables on the command line before invoking the CLI.
 
-To check for ...:
+To check for new posts:
 
 ```bash
-$ ORBIT_API_KEY=... ORBIT_WORKSPACE_ID=... circle_api_key=... bundle exec circle_orbit --flag
+$ ORBIT_API_KEY=... ORBIT_WORKSPACE_ID=... CIRCLE_API_KEY=... CIRCLE_URL=... bundle exec circle_orbit --check-posts
+```
+
+To check for new comments on posts:
+
+```bash
+$ ORBIT_API_KEY=... ORBIT_WORKSPACE_ID=... CIRCLE_API_KEY=... CIRCLE_URL=... bundle exec circle_orbit --check-comments
 ```
 
 ## GitHub Actions Automation Setup

@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+check_comments = false
+check_posts = false
+
+options = {}
+choices = OptionParser.new do |opts|
+  opts.banner = "Usage: circle_orbit --check-comments"
+  opts.on("-h", "--help", "Prints help instructions") do
+    puts opts
+    exit
+  end
+  opts.on("--check-comments", "Check for new comments on your Circle Spaces posts") do
+    check_comments = true
+  end
+  opts.on("--check-posts", "Check for new posts in your Circle Spaces") do
+    check_posts = true
+  end
+end.parse!
+
+$LOAD_PATH.unshift(File.expand_path('../lib/circle_orbit', __dir__))
+
+require_relative '../lib/circle_orbit'
+require_relative '../scripts/check_comments'
+require_relative '../scripts/check_posts'
+
+if check_comments
+  puts "Checking for new Circle Spaces post comments within the past day and sending them to your Orbit workspace..."
+  ARGV[0] = 'render'
+  CircleOrbit::Scripts::CheckComments.start(ARGV)
+end
+
+if check_posts
+  puts "Checking for new Circle Spaces posts and sending them to your Orbit workspace..."
+  ARGV[0] = 'render'
+  CircleOrbit::Scripts::CheckPosts.start(ARGV)
+end
