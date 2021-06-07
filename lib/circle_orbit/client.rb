@@ -35,10 +35,8 @@ module CircleOrbit
       @orbit_api_key = params.fetch(:orbit_api_key, ENV["ORBIT_API_KEY"])
       @orbit_workspace = params.fetch(:orbit_workspace, ENV["ORBIT_WORKSPACE_ID"])
       @circle_api_key = params.fetch(:circle_api_key, ENV["CIRCLE_API_KEY"])
-      @circle_url = params.fetch(:circle_url, ENV["CIRCLE_URL"])
+      @circle_url = sanitize_url(params.fetch(:circle_url, ENV["CIRCLE_URL"]))
       @circle_community_id = circle_community_id
-
-      after_initialize!
     end
 
     def posts
@@ -62,10 +60,6 @@ module CircleOrbit
     end
 
     private
-
-    def after_initialize!
-      @circle_url = sanitize_url(@circle_url)
-    end
 
     def sanitize_url(url)
       return url.delete_suffix("/") if url[-1, 1] == "/"
