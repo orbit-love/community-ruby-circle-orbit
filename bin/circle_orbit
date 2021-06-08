@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-require 'optparse'
+# frozen_string_literal: true
+
+require "optparse"
 
 check_comments = false
 check_posts = false
@@ -19,20 +21,20 @@ choices = OptionParser.new do |opts|
   end
 end.parse!
 
-$LOAD_PATH.unshift(File.expand_path('../lib/circle_orbit', __dir__))
+$LOAD_PATH.unshift(File.expand_path("../lib/circle_orbit", __dir__))
 
-require_relative '../lib/circle_orbit'
-require_relative '../scripts/check_comments'
-require_relative '../scripts/check_posts'
+require_relative "../lib/circle_orbit"
+require_relative "../scripts/check_comments"
+require_relative "../scripts/check_posts"
 
 if check_comments
   puts "Checking for new Circle Spaces post comments within the past day and sending them to your Orbit workspace..."
-  ARGV[0] = 'render'
+  ARGV[0] = "render"
   CircleOrbit::Scripts::CheckComments.start(ARGV)
 end
 
 if check_posts
   puts "Checking for new Circle Spaces posts and sending them to your Orbit workspace..."
-  ARGV[0] = 'render'
+  ARGV[0] = "render"
   CircleOrbit::Scripts::CheckPosts.start(ARGV)
 end

@@ -23,16 +23,16 @@ module CircleOrbit
 
       if type == "comment"
         CircleOrbit::Interactions::Comment.new(
-            post_title: data["post_name"],
-            body: data["body"]["body"],
-            created_at: data["body"]["created_at"],
-            id: data["body"]["record_id"],
-            space: data["space_slug"].gsub(/-/, ' ').capitalize,
-            url: data["url"],
-            author: data["user_name"],
-            email: data["user_email"],
-            workspace_id: orbit_workspace,
-            api_key: orbit_api_key
+          post_title: data["post_name"],
+          body: data["body"]["body"],
+          created_at: data["body"]["created_at"],
+          id: data["body"]["record_id"],
+          space: data["space_slug"].gsub(/-/, " ").capitalize,
+          url: data["url"],
+          author: data["user_name"],
+          email: data["user_email"],
+          workspace_id: orbit_workspace,
+          api_key: orbit_api_key
         )
       end
     end
