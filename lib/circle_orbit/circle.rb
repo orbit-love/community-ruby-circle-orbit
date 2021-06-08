@@ -17,6 +17,8 @@ module CircleOrbit
         posts = get_posts(space["id"])
 
         posts.each do |post|
+          next if post.nil? || post.empty?
+
           CircleOrbit::Orbit.call(
             type: "post",
             data: post,
@@ -28,18 +30,20 @@ module CircleOrbit
     end
 
     def process_comments
-        comments = get_comments
+      comments = get_comments
 
-        return if comments.nil? || comments.empty?
+      return if comments.nil? || comments.empty?
 
-        comments.each do |comment|
-            CircleOrbit::Orbit.call(
-                type: "comment",
-                data: comment,
-                orbit_api_key: @orbit_api_key,
-                orbit_workspace: @orbit_workspace
-            )
-        end
+      comments.each do |comment|
+        next if comment.nil? || comment.empty?
+
+        CircleOrbit::Orbit.call(
+          type: "comment",
+          data: comment,
+          orbit_api_key: @orbit_api_key,
+          orbit_workspace: @orbit_workspace
+        )
+      end
     end
 
     private
@@ -55,7 +59,7 @@ module CircleOrbit
 
       response = https.request(request)
 
-      response = JSON.parse(response.body)
+      JSON.parse(response.body)
     end
 
     def get_posts(id)
@@ -69,21 +73,21 @@ module CircleOrbit
 
       response = https.request(request)
 
-      response = JSON.parse(response.body)
+      JSON.parse(response.body)
     end
 
     def get_comments
-        url = URI("#{@circle_url}/api/v1/comments?community_id=#{@circle_community_id}")
+      url = URI("#{@circle_url}/api/v1/comments?community_id=#{@circle_community_id}")
 
-        https = Net::HTTP.new(url.host, url.port)
-        https.use_ssl = true
-  
-        request = Net::HTTP::Get.new(url)
-        request["Authorization"] = "Token #{@circle_api_key}"
-  
-        response = https.request(request)
-  
-        response = JSON.parse(response.body)
+      https = Net::HTTP.new(url.host, url.port)
+      https.use_ssl = true
+
+      request = Net::HTTP::Get.new(url)
+      request["Authorization"] = "Token #{@circle_api_key}"
+
+      response = https.request(request)
+
+      JSON.parse(response.body)
     end
   end
 end

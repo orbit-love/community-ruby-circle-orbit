@@ -2,13 +2,14 @@
 
 require "json"
 require "action_view"
+require_relative "../utils"
 
 module CircleOrbit
   module Interactions
     class Post
       def initialize(post_title:, body:, created_at:, id:, space:, url:, author:, email:, workspace_id:, api_key:)
         @post_title = post_title
-        @body = sanitize_body(body)
+        @body = CircleOrbit::Utils.sanitize_body(body)
         @created_at = created_at
         @id = id
         @space = space
@@ -61,14 +62,6 @@ module CircleOrbit
 
           #{body}
         HEREDOC
-      end
-
-      private
-
-      def sanitize_body(body)
-        body = ActionView::Base.full_sanitizer.sanitize(body)
-
-        body.gsub("\n", " ")
       end
     end
   end
