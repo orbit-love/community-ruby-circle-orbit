@@ -49,11 +49,19 @@ client = CircleOrbit::Client.new(
     circle_url: YOUR_CIRCLE_URL
 )
 ```
-
 ### Instantiation with credentials in dotenv file:
 
 ```ruby
 client = CircleOrbit::Client.new
+```
+### Performing a Historical Import
+
+You may want to perform a one-time historical import to fetch all your previous Circle interactions and bring them into your Orbit workspace. To do so, instantiate your `client` with the `historical_import` flag:
+
+```ruby
+client = CircleOrbit::Client.new(
+  historical_import: true
+)
 ```
 ### Post New Spaces Posts to Orbit Workspace
 
@@ -85,6 +93,8 @@ To check for new comments on posts:
 ```bash
 $ ORBIT_API_KEY=... ORBIT_WORKSPACE_ID=... CIRCLE_API_KEY=... CIRCLE_URL=... bundle exec circle_orbit --check-comments
 ```
+
+**Add the `--historical-import` flag to your CLI command to perform a historical import of all your Circle interactions using the CLI.**
 
 ## GitHub Actions Automation Setup
 

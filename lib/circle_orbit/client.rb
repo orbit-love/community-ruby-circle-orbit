@@ -23,13 +23,17 @@ require "json"
 # @option params [String] :circle_url
 #   The URL of the Circle community
 #
+# @option params [Boolean] :historical_import
+#   Flag on whether to import all Circle historical data
+#   Default to false
+#
 # @param [Hash] params
 #
 # @return [CircleOrbit::Client]
 #
 module CircleOrbit
   class Client
-    attr_accessor :orbit_api_key, :orbit_workspace, :circle_api_key, :circle_url, :circle_community_id
+    attr_accessor :orbit_api_key, :orbit_workspace, :circle_api_key, :circle_url, :circle_community_id, :historical_import
 
     def initialize(params = {})
       @orbit_api_key = params.fetch(:orbit_api_key, ENV["ORBIT_API_KEY"])
@@ -37,6 +41,7 @@ module CircleOrbit
       @circle_api_key = params.fetch(:circle_api_key, ENV["CIRCLE_API_KEY"])
       @circle_url = sanitize_url(params.fetch(:circle_url, ENV["CIRCLE_URL"]))
       @circle_community_id = circle_community_id
+      @historical_import = params.fetch(:historical_import, false)
     end
 
     def posts
@@ -45,7 +50,8 @@ module CircleOrbit
         circle_url: @circle_url,
         circle_community_id: @circle_community_id,
         orbit_api_key: @orbit_api_key,
-        orbit_workspace: @orbit_workspace
+        orbit_workspace: @orbit_workspace,
+        historical_import: @historical_import
       ).process_posts
     end
 
@@ -55,7 +61,8 @@ module CircleOrbit
         circle_url: @circle_url,
         circle_community_id: @circle_community_id,
         orbit_api_key: @orbit_api_key,
-        orbit_workspace: @orbit_workspace
+        orbit_workspace: @orbit_workspace,
+        historical_import: @historical_import
       ).process_comments
     end
 

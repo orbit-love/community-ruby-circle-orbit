@@ -8,8 +8,8 @@ module CircleOrbit
   module Scripts
     class CheckPosts < Thor
       desc "render", "check for new posts in Circle Spaces and push them to Orbit"
-      def render
-        client = CircleOrbit::Client.new
+      def render(*params)
+        client = CircleOrbit::Client.new(historical_import: params[0])
         client.posts
       end
     end
