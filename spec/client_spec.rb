@@ -19,6 +19,8 @@ RSpec.describe CircleOrbit::Client do
   end
 
   let(:subject) do
+    ENV["CIRCLE_COMMUNITY_ID"] = "123"
+
     CircleOrbit::Client.new(
       orbit_api_key: "12345",
       orbit_workspace: "test",
@@ -36,6 +38,8 @@ RSpec.describe CircleOrbit::Client do
   end
 
   it "allows historical import to be defined during initialization" do
+    ENV["CIRCLE_COMMUNITY_ID"] = "123"
+
     client = CircleOrbit::Client.new(
       orbit_api_key: "12345",
       orbit_workspace: "test",
