@@ -19,6 +19,8 @@ RSpec.describe CircleOrbit::Client do
   end
 
   let(:subject) do
+    ENV["CIRCLE_COMMUNITY_ID"] = "123"
+
     CircleOrbit::Client.new(
       orbit_api_key: "12345",
       orbit_workspace: "test",
@@ -29,6 +31,24 @@ RSpec.describe CircleOrbit::Client do
 
   it "initializes with arguments passed in directly" do
     expect(subject).to be_truthy
+  end
+
+  it "defaults to false for historical import" do
+    expect(subject.historical_import).to eq(false)
+  end
+
+  it "allows historical import to be defined during initialization" do
+    ENV["CIRCLE_COMMUNITY_ID"] = "123"
+
+    client = CircleOrbit::Client.new(
+      orbit_api_key: "12345",
+      orbit_workspace: "test",
+      circle_api_key: "abc123",
+      circle_url: "https://orbit.circle.so/",
+      historical_import: true
+    )
+
+    expect(client.historical_import).to eq(true)
   end
 
   it "initializes with credentials from environment variables" do

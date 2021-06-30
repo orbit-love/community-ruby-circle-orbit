@@ -8,6 +8,7 @@ module CircleOrbit
       @circle_url = params.fetch(:circle_url)
       @orbit_api_key = params.fetch(:orbit_api_key)
       @orbit_workspace = params.fetch(:orbit_workspace)
+      @historical_import = params.fetch(:historical_import, false)
     end
 
     def process_posts
@@ -16,8 +17,20 @@ module CircleOrbit
       spaces.each do |space|
         posts = get_posts(space["id"])
 
+        times = 0
+        orbit_timestamp = last_orbit_activity_timestamp(type: "post")
         posts.each do |post|
           next if post.nil? || post.empty?
+
+          unless @historical_import && orbit_timestamp
+            next if post["created_at"] < orbit_timestamp unless orbit_timestamp.nil?
+          end
+
+          if orbit_timestamp && @historical_import == false
+            next if post["created_at"] < orbit_timestamp
+          end
+
+          times += 1
 
           CircleOrbit::Orbit.call(
             type: "post",
@@ -26,6 +39,11 @@ module CircleOrbit
             orbit_workspace: @orbit_workspace
           )
         end
+
+        output = "Sent #{times} new posts to your Orbit workspace"
+
+        puts output
+        return output
       end
     end
 
@@ -34,8 +52,20 @@ module CircleOrbit
 
       return if comments.nil? || comments.empty?
 
+      times = 0
+      orbit_timestamp = last_orbit_activity_timestamp(type: "comment")
       comments.each do |comment|
         next if comment.nil? || comment.empty?
+
+        unless @historical_import && orbit_timestamp
+          next if comment["body"]["created_at"] < orbit_timestamp unless orbit_timestamp.nil?
+        end
+
+        if orbit_timestamp && @historical_import == false
+          next if comment["body"]["created_at"] < orbit_timestamp
+        end
+
+        times += 1
 
         CircleOrbit::Orbit.call(
           type: "comment",
@@ -44,6 +74,10 @@ module CircleOrbit
           orbit_workspace: @orbit_workspace
         )
       end
+      output = "Sent #{times} new comments to your Orbit workspace"
+
+      puts output
+      return output
     end
 
     private
@@ -88,6 +122,26 @@ module CircleOrbit
       response = https.request(request)
 
       JSON.parse(response.body)
+    end
+
+    def last_orbit_activity_timestamp(type: )
+      @last_orbit_activity_timestamp ||= begin
+        if type == "post"
+          activity_type = "custom:circle:post"
+        end
+
+        if type == "comment"
+          activity_type = "custom:circle:comment"
+        end
+
+        OrbitActivities::Request.new(
+          api_key: @orbit_api_key,
+          workspace_id: @orbit_workspace,
+          user_agent: "community-ruby-circle-orbit/#{CircleOrbit::VERSION}",
+          action: "latest_activity_timestamp",
+          filters: { activity_type: activity_type }
+        ).response
+      end
     end
   end
 end

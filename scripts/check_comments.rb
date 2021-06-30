@@ -8,8 +8,8 @@ module CircleOrbit
   module Scripts
     class CheckComments < Thor
       desc "render", "check for new comments in Spaces posts and push them to Orbit"
-      def render
-        client = CircleOrbit::Client.new
+      def render(*params)
+        client = CircleOrbit::Client.new(historical_import: params[0])
         client.comments
       end
     end
