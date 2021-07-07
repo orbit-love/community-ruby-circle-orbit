@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    circle_orbit (0.0.2)
+    circle_orbit (0.1.0)
       actionview (~> 6.1)
       activesupport (~> 6.1)
       dotenv (~> 2.7)
@@ -63,8 +63,6 @@ GEM
       nokogiri (>= 1.5.9)
     minitest (5.14.4)
     nokogiri (1.11.7-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.11.7-x86_64-linux)
       racc (~> 1.4)
     orbit_activities (0.2.2)
       http (~> 4.4)

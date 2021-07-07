@@ -19,6 +19,7 @@ module CircleOrbit
 
         times = 0
         orbit_timestamp = last_orbit_activity_timestamp(type: "post")
+
         posts.each do |post|
           next if post.nil? || post.empty?
 
@@ -97,17 +98,30 @@ module CircleOrbit
     end
 
     def get_posts(id)
-      url = URI("#{@circle_url}/api/v1/posts?community_id=#{@circle_community_id}&space_id=#{id}")
+      page = 1
+      posts = []
+      looped_at_least_once = false
 
-      https = Net::HTTP.new(url.host, url.port)
-      https.use_ssl = true
+      while page >= 1
+        page += 1 if looped_at_least_once
+        url = URI("#{@circle_url}/api/v1/posts?community_id=#{@circle_community_id}&space_id=#{id}&page=#{page}")
 
-      request = Net::HTTP::Get.new(url)
-      request["Authorization"] = "Token #{@circle_api_key}"
+        https = Net::HTTP.new(url.host, url.port)
+        https.use_ssl = true
 
-      response = https.request(request)
+        request = Net::HTTP::Get.new(url)
+        request["Authorization"] = "Token #{@circle_api_key}"
 
-      JSON.parse(response.body)
+        response = https.request(request)
+
+        response = JSON.parse(response.body)
+        posts << response unless response.empty? || response.nil?
+        looped_at_least_once = true
+
+        break if response.empty? || response.nil?
+      end
+
+      posts.flatten!
     end
 
     def get_comments
